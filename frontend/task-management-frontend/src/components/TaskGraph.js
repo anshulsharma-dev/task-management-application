@@ -20,22 +20,33 @@ ChartJS.register(
 );
 
 const TaskGraph = ({ tasks }) => {
-  // Calculate durations and labels for the graph
-  const labels = tasks.map((task) => task.title);
-  const durations = tasks.map((task) => {
-    const start = new Date(`2021-01-01T${task.startTime}:00`);
-    const end = new Date(`2021-01-01T${task.endTime}:00`);
-    const diff = (end - start) / (1000 * 60 * 60); // Convert milliseconds to hours
-    return diff;
-  });
+  // Initialize an object to count tasks by due date and completion status
+  const tasksByDate = tasks.reduce((acc, task) => {
+    const dueDate = task.dueDate;
+    if (!acc[dueDate]) {
+      acc[dueDate] = { completed: 0, pending: 0 };
+    }
+    task.isCompleted ? acc[dueDate].completed++ : acc[dueDate].pending++;
+    return acc;
+  }, {});
 
-  const data = {
-    labels,
+  // Prepare data for the chart
+  const chartData = {
+    labels: Object.keys(tasksByDate),
     datasets: [
       {
-        label: "Task Duration (hours)",
-        data: durations,
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
+        label: "Completed Tasks",
+        data: Object.values(tasksByDate).map((data) => data.completed),
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        borderColor: "rgba(75, 192, 192, 1)",
+        borderWidth: 1,
+      },
+      {
+        label: "Pending Tasks",
+        data: Object.values(tasksByDate).map((data) => data.pending),
+        backgroundColor: "rgba(255, 99, 132, 0.2)",
+        borderColor: "rgba(255, 99, 132, 1)",
+        borderWidth: 1,
       },
     ],
   };
@@ -50,8 +61,8 @@ const TaskGraph = ({ tasks }) => {
 
   return (
     <div>
-      <h3>Task Duration Graph</h3>
-      <Bar data={data} options={options} />
+      <h3>Task Completion Graph</h3>
+      <Bar data={chartData} options={options} />
     </div>
   );
 };
