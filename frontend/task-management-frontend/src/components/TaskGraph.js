@@ -20,7 +20,6 @@ ChartJS.register(
 );
 
 const TaskGraph = ({ tasks }) => {
-  // Initialize an object to count tasks by due date and completion status
   const tasksByDate = tasks.reduce((acc, task) => {
     const dueDate = task.dueDate;
     if (!acc[dueDate]) {
@@ -30,7 +29,6 @@ const TaskGraph = ({ tasks }) => {
     return acc;
   }, {});
 
-  // Prepare data for the chart
   const chartData = {
     labels: Object.keys(tasksByDate),
     datasets: [

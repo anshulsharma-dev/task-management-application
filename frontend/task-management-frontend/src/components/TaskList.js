@@ -13,7 +13,7 @@ const TaskList = ({ tasks, fetchTasks }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isCompleted: true }),
       });
-      fetchTasks(); // Refresh the tasks list
+      fetchTasks();
     } catch (error) {
       console.error("Failed to complete task:", error);
     }
@@ -24,7 +24,7 @@ const TaskList = ({ tasks, fetchTasks }) => {
       await fetch(`http://localhost:5000/api/tasks/${taskId}`, {
         method: "DELETE",
       });
-      fetchTasks(); // Refresh the tasks list
+      fetchTasks();
     } catch (error) {
       console.error("Failed to delete task:", error);
     }
@@ -39,8 +39,8 @@ const TaskList = ({ tasks, fetchTasks }) => {
           dueDate: postponeDate.toISOString().split("T")[0],
         }),
       });
-      fetchTasks(); // Refresh the tasks list
-      setIsPostponing(null); // Reset postponing state
+      fetchTasks();
+      setIsPostponing(null);
     } catch (error) {
       console.error("Failed to postpone task:", error);
     }
@@ -82,11 +82,7 @@ const TaskList = ({ tasks, fetchTasks }) => {
                 </button>
                 <button
                   onClick={() => handleDeleteTask(task._id)}
-                  disabled={task.isCompleted}
                   className="btn btn-danger me-2"
-                  style={{
-                    cursor: task.isCompleted ? "not-allowed" : "pointer",
-                  }}
                 >
                   Delete
                 </button>
