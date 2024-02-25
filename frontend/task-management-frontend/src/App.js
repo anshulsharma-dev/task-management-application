@@ -5,6 +5,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Dashboard from "./components/Dashboard";
 import "bootstrap/dist/css/bootstrap.min.css"; // Ensure Bootstrap is imported
+import "react-datepicker/dist/react-datepicker.css";
 
 function App() {
   return (
